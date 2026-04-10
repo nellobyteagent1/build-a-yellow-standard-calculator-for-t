@@ -1,0 +1,370 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --gold-50: #fffdf5;
+  --gold-100: #fef9e7;
+  --gold-200: #fcefc7;
+  --gold-300: #f9e29d;
+  --gold-400: #f5d060;
+  --gold-500: #e6b800;
+  --gold-600: #c99a00;
+  --gold-700: #a67c00;
+  --gold-800: #7a5c00;
+  --gold-900: #4a3700;
+  --amber-500: #f59e0b;
+  --amber-600: #d97706;
+  --amber-700: #b45309;
+  --honey: #e8a817;
+  --cream: #fefcf3;
+  --charcoal: #2c2416;
+  --charcoal-light: #3d3225;
+  --warm-white: #fdf6e3;
+  --shadow-gold: rgba(198, 149, 0, 0.35);
+  --shadow-dark: rgba(40, 30, 10, 0.25);
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  background: var(--charcoal);
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% 0%, rgba(230, 184, 0, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(245, 158, 11, 0.08) 0%, transparent 50%);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Subtle geometric background pattern */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      60deg,
+      transparent,
+      transparent 40px,
+      rgba(230, 184, 0, 0.02) 40px,
+      rgba(230, 184, 0, 0.02) 41px
+    ),
+    repeating-linear-gradient(
+      -60deg,
+      transparent,
+      transparent 40px,
+      rgba(230, 184, 0, 0.02) 40px,
+      rgba(230, 184, 0, 0.02) 41px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.calculator {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 380px;
+  padding: 24px;
+  background: linear-gradient(
+    165deg,
+    #f9e8a0 0%,
+    #f0d060 15%,
+    #e8c020 40%,
+    #d4a800 70%,
+    #c29200 100%
+  );
+  border-radius: 28px;
+  box-shadow:
+    0 2px 0 0 #fce588 inset,
+    0 -2px 0 0 #a67c00 inset,
+    0 25px 60px -12px rgba(0, 0, 0, 0.5),
+    0 8px 24px -4px var(--shadow-gold),
+    0 0 0 1px rgba(255, 248, 220, 0.2) inset;
+  animation: calc-enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes calc-enter {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+}
+
+/* Top decorative bar */
+.calculator::before {
+  content: '';
+  display: block;
+  height: 4px;
+  margin: -4px 20px 20px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 240, 0.5) 20%,
+    rgba(255, 255, 240, 0.7) 50%,
+    rgba(255, 255, 240, 0.5) 80%,
+    transparent 100%
+  );
+}
+
+/* Brand label */
+.brand {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold-800);
+  text-align: center;
+  margin-bottom: 16px;
+  opacity: 0.7;
+  text-shadow: 0 1px 0 rgba(255, 255, 240, 0.3);
+}
+
+/* Display */
+.display {
+  background: var(--charcoal);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  overflow: hidden;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.3) inset,
+    0 1px 0 rgba(255, 255, 240, 0.1);
+  position: relative;
+}
+
+.display::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to bottom, rgba(255, 250, 220, 0.03), transparent);
+  border-radius: 16px 16px 0 0;
+  pointer-events: none;
+}
+
+.expression {
+  font-size: 0.85rem;
+  color: var(--gold-400);
+  opacity: 0.7;
+  min-height: 1.2em;
+  word-break: break-all;
+  text-align: right;
+  width: 100%;
+  font-family: 'DM Mono', monospace;
+  transition: opacity 0.2s;
+}
+
+.current {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 2.8rem;
+  color: var(--gold-100);
+  line-height: 1.1;
+  word-break: break-all;
+  text-align: right;
+  width: 100%;
+  text-shadow: 0 0 30px rgba(230, 184, 0, 0.15);
+  transition: font-size 0.2s ease;
+}
+
+.current.shrink { font-size: 2rem; }
+.current.shrink-more { font-size: 1.5rem; }
+
+/* Button grid */
+.keys {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+/* Base button */
+.key {
+  position: relative;
+  height: 62px;
+  border: none;
+  border-radius: 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 1.2rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease,
+    background 0.15s ease;
+  outline: none;
+}
+
+.key:focus-visible {
+  outline: 2px solid var(--gold-100);
+  outline-offset: 2px;
+}
+
+/* Digit buttons — warm cream on golden base */
+.key--digit {
+  background: linear-gradient(to bottom, var(--gold-200), var(--gold-300));
+  color: var(--charcoal);
+  box-shadow:
+    0 3px 0 0 var(--gold-600),
+    0 4px 8px -2px var(--shadow-dark),
+    0 1px 0 0 var(--gold-100) inset;
+}
+
+.key--digit:hover {
+  background: linear-gradient(to bottom, var(--gold-100), var(--gold-200));
+}
+
+.key--digit:active,
+.key--digit.pressed {
+  transform: translateY(2px);
+  box-shadow:
+    0 1px 0 0 var(--gold-600),
+    0 2px 4px -2px var(--shadow-dark),
+    0 1px 0 0 var(--gold-100) inset;
+}
+
+/* Operator buttons — deep amber */
+.key--op {
+  background: linear-gradient(to bottom, var(--amber-500), var(--amber-600));
+  color: var(--gold-50);
+  font-size: 1.35rem;
+  box-shadow:
+    0 3px 0 0 var(--amber-700),
+    0 4px 8px -2px var(--shadow-dark),
+    0 1px 0 0 rgba(255, 220, 100, 0.3) inset;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.key--op:hover {
+  background: linear-gradient(to bottom, #f7a90e, var(--amber-500));
+}
+
+.key--op:active,
+.key--op.pressed {
+  transform: translateY(2px);
+  box-shadow:
+    0 1px 0 0 var(--amber-700),
+    0 2px 4px -2px var(--shadow-dark),
+    0 1px 0 0 rgba(255, 220, 100, 0.3) inset;
+}
+
+.key--op.active {
+  background: linear-gradient(to bottom, var(--amber-700), #8b4000);
+  box-shadow:
+    0 3px 0 0 #6b3000,
+    0 4px 8px -2px var(--shadow-dark),
+    0 1px 4px 0 rgba(245, 158, 11, 0.3) inset;
+}
+
+/* Function buttons — muted gold */
+.key--fn {
+  background: linear-gradient(to bottom, var(--gold-400), var(--gold-500));
+  color: var(--charcoal);
+  font-weight: 500;
+  box-shadow:
+    0 3px 0 0 var(--gold-700),
+    0 4px 8px -2px var(--shadow-dark),
+    0 1px 0 0 rgba(255, 240, 150, 0.3) inset;
+}
+
+.key--fn:hover {
+  background: linear-gradient(to bottom, var(--gold-300), var(--gold-400));
+}
+
+.key--fn:active,
+.key--fn.pressed {
+  transform: translateY(2px);
+  box-shadow:
+    0 1px 0 0 var(--gold-700),
+    0 2px 4px -2px var(--shadow-dark),
+    0 1px 0 0 rgba(255, 240, 150, 0.3) inset;
+}
+
+/* Equals — rich dark gold, stands out */
+.key--eq {
+  background: linear-gradient(to bottom, var(--gold-800), var(--gold-900));
+  color: var(--gold-200);
+  font-size: 1.5rem;
+  box-shadow:
+    0 3px 0 0 #2d1f00,
+    0 4px 8px -2px var(--shadow-dark),
+    0 1px 0 0 rgba(200, 160, 50, 0.2) inset;
+  text-shadow: 0 0 12px rgba(230, 184, 0, 0.3);
+}
+
+.key--eq:hover {
+  background: linear-gradient(to bottom, var(--gold-700), var(--gold-800));
+}
+
+.key--eq:active,
+.key--eq.pressed {
+  transform: translateY(2px);
+  box-shadow:
+    0 1px 0 0 #2d1f00,
+    0 2px 4px -2px var(--shadow-dark),
+    0 1px 0 0 rgba(200, 160, 50, 0.2) inset;
+}
+
+/* Zero spans two columns */
+.key--zero {
+  grid-column: span 2;
+}
+
+/* Ripple effect */
+.key .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(0);
+  animation: ripple-out 0.5s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes ripple-out {
+  to {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* Responsive */
+@media (max-width: 420px) {
+  .calculator {
+    max-width: 100%;
+    margin: 8px;
+    padding: 16px;
+    border-radius: 20px;
+  }
+  .key { height: 56px; font-size: 1.1rem; border-radius: 12px; }
+  .current { font-size: 2.2rem; }
+  .display { padding: 16px 18px; min-height: 90px; }
+  .keys { gap: 8px; }
+}
+
+@media (min-width: 421px) and (max-width: 768px) {
+  .calculator { max-width: 360px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
